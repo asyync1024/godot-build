@@ -71,7 +71,7 @@ jobs:
       - name: Build package as builder
         run: |
           set -euxo pipefail
-          su - builder -c "cd $GITHUB_WORKSPACE && makepkg --noconfirm"
+          su - builder -c "cd $GITHUB_WORKSPACE/godot32-git && makepkg --noconfirm"
 
       - name: Upload built package
         uses: actions/upload-artifact@v4
