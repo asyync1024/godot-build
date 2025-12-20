@@ -76,5 +76,5 @@ jobs:
       - name: Upload built package
         uses: actions/upload-artifact@v4
         with:
-          name: godot-pkg
+          name: godot32-pkg
           path: "*.pkg.tar.zst"
