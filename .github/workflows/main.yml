@@ -15,10 +15,6 @@ jobs:
           set -euxo pipefail
           if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
             cat >> /etc/pacman.conf <<'EOF'
-
-          [core]
-          Include = /etc/pacman.d/mirrorlist
-          
           [multilib]
           Include = /etc/pacman.d/mirrorlist
           EOF
@@ -30,37 +26,27 @@ jobs:
       - name: Install build & runtime dependencies
         run: |
           set -euxo pipefail
-          # core build deps (ensure these are present)
-          pacman -S --noconfirm --needed base-devel git scons yasm setconf mold || true
 
-          # install a broad set of lib32 runtime deps (pacman will skip ones not found)
           PKG32=(
-            lib32-brotli
-            lib32-freetype2
-            lib32-libglvnd
-            lib32-libtheora
-            lib32-libvorbis
-            lib32-libwebp
-            lib32-libxcursor
-            lib32-libxi
-            lib32-libxinerama
-            lib32-libxrandr
-            lib32-pcre2
-            lib32-alsa-lib
-            lib32-pulseaudio
-            lib32-glib2
-            lib32-graphite
-            lib32-libsquish
-            lib32-libwslay
-            lib32-miniupnpc
-            lib32-openxr
+            lib32-brotli \
+            lib32-freetype2 \
+            lib32-libglvnd \
+            lib32-libtheora \
+            lib32-libvorbis \
+            lib32-libwebp \
+            lib32-libxcursor \
+            lib32-libxi \
+            lib32-libxinerama \
+            lib32-libxrandr \
+            lib32-pcre2 \
+            lib32-alsa-lib \
+            lib32-pulseaudio \
+            lib32-glib2 \
             pulse-native-provider
           )
 
-          for p in "${PKG32[@]}"; do
-            echo "attempting install: $p"
-            pacman -S --noconfirm --needed "$p" || echo "package $p not found/available, skipping"
-          done
+          # core build deps and packages required. (ensure these are present)
+          pacman -S --noconfirm --needed base-devel git scons yasm setconf mold "${PKG32[@]}"
 
       - name: Create build user and set permissions
         run: |
