@@ -43,11 +43,6 @@ jobs:
             lib32-alsa-lib \
             lib32-pulseaudio \
             lib32-glib2 \
-            lib32-graphite \
-            lib32-libsquish \
-            lib32-libwslay \
-            lib32-miniupnpc \
-            lib32-openxr \
             pulse-native-provider
           )
 
