@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euxo pipefail
           # core build deps (ensure these are present)
-          pacman -S --noconfirm --needed base-devel git scons yasm setconf mold || true
+          pacman -S --noconfirm --needed base-devel git scons yasm setconf mold ccache || true
 
           # install a broad set of lib32 runtime deps (pacman will skip ones not found)
           PKG32=(
