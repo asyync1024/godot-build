@@ -48,10 +48,10 @@ jobs:
           # core build deps and packages required. (ensure these are present)
           pacman -S --noconfirm --needed base-devel git scons yasm setconf mold "${PKG32[@]}"
 
-      - name: Install yay
+      - name: Install yay-bin
         run: |
           git clone "https://aur.archlinux.org/yay-bin.git"
-          cd yay
+          cd yay-bin
           makepkg -si --noconfirm
 
       - name: Create build user and set permissions
