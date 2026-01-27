@@ -67,7 +67,7 @@ jobs:
                           makepkg -s --noconfirm"
           cd $GITHUB_WORKSPACE/yay-bin &&
           pacman -U --noconfirm yay-bin*
-          yay -S --noconfirm --needed lib32-graphite lib32-libsquish lib32-openxr
+          su - builder -c "yay -S --noconfirm --needed lib32-graphite lib32-libsquish lib32-openxr"
 
       - name: Build package as builder
         run: |
