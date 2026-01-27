@@ -1,0 +1,66 @@
+name: Build Godot (AUR) (yay-bin) (32-bit)
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Enable multilib and refresh mirrors
+        run: |
+          set -euxo pipefail
+          if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
+            cat >> /etc/pacman.conf <<'EOF'
+          [multilib]
+          Include = /etc/pacman.d/mirrorlist
+          EOF
+          fi
+          pacman-key --init || true
+          pacman-key --populate archlinux || true
+          pacman -Syu --noconfirm
+
+      - name: Install build & runtime dependencies
+        run: |
+          set -euxo pipefail
+
+          PKG32=(
+            lib32-brotli \
+            lib32-freetype2 \
+            lib32-libglvnd \
+            lib32-libtheora \
+            lib32-libvorbis \
+            lib32-libwebp \
+            lib32-libxcursor \
+            lib32-libxi \
+            lib32-libxinerama \
+            lib32-libxrandr \
+            lib32-pcre2 \
+            lib32-alsa-lib \
+            lib32-pulseaudio \
+            lib32-glib2 \
+            pulse-native-provider
+          )
+
+          # core build deps and packages required. (ensure these are present)
+          pacman -S --noconfirm --needed base-devel git scons yasm setconf mold "${PKG32[@]}"
+
+      - name: Create build user and set permissions
+        run: |
+          set -euxo pipefail
+          useradd -m builder || true
+          chown -R builder:builder "$GITHUB_WORKSPACE"
+
+      - name: Build package as builder
+        run: |
+          set -euxo pipefail
+          su - builder -c "yay -S godot32 --noconfirm"
+
+      - name: Upload built package
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot32-pkg
+          path: "*.pkg.tar.zst"
