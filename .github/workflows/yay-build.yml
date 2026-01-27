@@ -61,18 +61,21 @@ jobs:
       - name: Install yay-bin
         run: |
           cd "$GITHUB_WORKSPACE"
-          su - builder -c "cd $GITHUB_WORKSPACE
-                          git clone 'https://aur.archlinux.org/yay-bin.git'
-                          cd yay-bin
-                          makepkg -s --noconfirm"
+          su - builder -c "cd $GITHUB_WORKSPACE &&
+                          git clone 'https://aur.archlinux.org/yay-bin.git' &&
+                          cd yay-bin &&
+                          makepkg -si --noconfirm"
 
       - name: Build package as builder
         run: |
           set -euxo pipefail
-          su - builder -c "yay -G godot32 --noconfirm && cd godot32 && makepkg -s --noconfirm"
+          su - builder -c "cd $GITHUB_WORKSPACE &&
+                          yay -G godot32 --noconfirm &&
+                          cd godot32 &&
+                          makepkg -s --noconfirm"
 
       - name: Upload built package
         uses: actions/upload-artifact@v4
         with:
           name: godot32-pkg
-          path: "/home/builder/godot32/*.pkg.tar.xz"
+          path: "$GITHUB_WORKSPACE/godot32/*.pkg.tar.xz"
