@@ -23,6 +23,10 @@ jobs:
           pacman-key --populate archlinux || true
           pacman -Syu --noconfirm
 
+      - name: Change package output to xz
+        run: |
+          sed -i "s/^PKGEXT=.*/PKGEXT='.pkg.tar.xz'" /etc/makepkg.conf
+
       - name: Install build & runtime dependencies
         run: |
           set -euxo pipefail
@@ -48,25 +52,25 @@ jobs:
           # core build deps and packages required. (ensure these are present)
           pacman -S --noconfirm --needed base-devel git scons yasm setconf mold "${PKG32[@]}"
 
-      - name: Install yay-bin
-        run: |
-          git clone "https://aur.archlinux.org/yay-bin.git"
-          cd yay-bin
-          makepkg -si --noconfirm
-
       - name: Create build user and set permissions
         run: |
           set -euxo pipefail
           useradd -m builder || true
           chown -R builder:builder "$GITHUB_WORKSPACE"
+          
+      - name: Install yay-bin
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          git clone "https://aur.archlinux.org/yay-bin.git"
+          su - builder -c "cd $GITHUB_WORKSPACE/yay-bin && makepkg -s --noconfirm"
 
       - name: Build package as builder
         run: |
           set -euxo pipefail
-          su - builder -c "yay -S godot32 --noconfirm"
+          su - builder -c "yay -G godot32 --noconfirm && cd godot32 && makepkg -s --noconfirm"
 
       - name: Upload built package
         uses: actions/upload-artifact@v4
         with:
           name: godot32-pkg
-          path: "*.pkg.tar.zst"
+          path: "/home/builder/godot32/*.pkg.tar.xz"
