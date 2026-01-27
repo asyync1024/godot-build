@@ -66,6 +66,7 @@ jobs:
           cd "$GITHUB_WORKSPACE"
           AUR_DEPS=(
           lib32-graphite
+          lib32-jsoncpp
           lib32-openxr
           )
           for pkg in ${AUR_DEPS[@]}; do
