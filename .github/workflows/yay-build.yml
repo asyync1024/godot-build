@@ -22,11 +22,7 @@ jobs:
           pacman-key --init || true
           pacman-key --populate archlinux || true
           pacman -Syu --noconfirm
-
-      - name: Change package output to xz
-        run: |
-          sed -i "s/^PKGEXT=.*/PKGEXT='.pkg.tar.xz'/" /etc/makepkg.conf
-
+          
       - name: Install build & runtime dependencies
         run: |
           set -euxo pipefail
@@ -57,6 +53,12 @@ jobs:
 
           # core build deps and packages required. (ensure these are present)
           pacman -S --noconfirm --needed base-devel git scons yasm setconf mold "${PKG32[@]}"
+
+      - name: Change package output to xz and add mold
+        run: |
+          sed -i "s/^PKGEXT=.*/PKGEXT='.pkg.tar.xz'/" /etc/makepkg.conf
+          sed -i 's/^LDFLAGS=.*/LDFLAGS="-Wl,-O1 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now \
+                 -Wl,-z,pack-relative-relocs -fuse-ld=mold"/'
 
       - name: Create build user and set permissions
         run: |
