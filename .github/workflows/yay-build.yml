@@ -61,7 +61,7 @@ jobs:
       - name: Install yay-bin
         run: |
           cd "$GITHUB_WORKSPACE"
-          git clone "https://aur.archlinux.org/yay-bin.git"
+          su - builder -c "git clone 'https://aur.archlinux.org/yay-bin.git'"
           su - builder -c "cd $GITHUB_WORKSPACE/yay-bin && makepkg -s --noconfirm"
 
       - name: Build package as builder
