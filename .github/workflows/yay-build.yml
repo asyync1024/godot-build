@@ -83,7 +83,7 @@ jobs:
         run: |
           set -euxo pipefail
           su - builder -c "cd $GITHUB_WORKSPACE &&
-                          git clone 'https://aur.archlinux.org/godot32.git'" &&
+                          git clone 'https://aur.archlinux.org/godot32.git' &&
                           cd godot32 &&
                           makepkg -s --noconfirm"
 
