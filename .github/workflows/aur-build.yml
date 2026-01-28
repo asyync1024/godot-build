@@ -56,9 +56,9 @@ jobs:
           # core build deps and packages required. (ensure these are present)
           pacman -S --noconfirm --needed base-devel git scons yasm setconf mold "${PKG32[@]}"
 
-      - name: Change package output to xz and add mold to LDFLAGS
+      - name: Change package compression to -18 and add mold to LDFLAGS
         run: |
-          sed -i "s/^PKGEXT=.*/PKGEXT='.pkg.tar.xz'/" /etc/makepkg.conf
+          sed -i 's/^COMPRESSZST.*/COMPRESSZST=(zstd -c -18 -T0 --auto-threads=logical -)/' /etc/makepkg.conf
           sed -i 's/^-Wl,-z,pack-relative-relocs.*/-Wl,-z,pack-relative-relocs -fuse-ld=mold"/' /etc/makepkg.conf
 
       - name: Create build user and set permissions
@@ -97,4 +97,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: godot32-pkg
-          path: "${{github.workspace}}/godot32/*.pkg.tar.xz"
+          path: "${{github.workspace}}/godot32/*.pkg.tar.zst"
