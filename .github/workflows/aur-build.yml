@@ -54,7 +54,7 @@ jobs:
           )
 
           # core build deps and packages required. (ensure these are present)
-          pacman -S --noconfirm --needed base-devel git scons yasm setconf mold "${PKG32[@]}"
+          pacman -S --noconfirm --needed base-devel git scons yasm setconf lld "${PKG32[@]}"
 
       - name: Change package compression to -18 and add mold to LDFLAGS
         run: |
@@ -91,6 +91,7 @@ jobs:
           su - builder -c "cd $GITHUB_WORKSPACE &&
                           git clone 'https://aur.archlinux.org/godot32.git' &&
                           cd godot32 &&
+                          sed -i '/bits=32/a \    linker=lld       # Use LLD as the linker' PKGBUILD &&
                           makepkg --noconfirm"
 
       - name: Upload built package
