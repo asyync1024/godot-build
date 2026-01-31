@@ -1,4 +1,4 @@
-name: Build Godot32 (AUR) (LLVM)
+name: Build Godot32 (AUR) (LLVM) (ThinLTO)
 on: workflow_dispatch
 
 jobs:
