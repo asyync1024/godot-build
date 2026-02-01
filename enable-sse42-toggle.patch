@@ -1,6 +1,6 @@
---- SConstruct	2026-01-25 18:11:41.000000000 +0530
-+++ SConstruct	2026-02-01 15:42:35.790643537 +0530
-@@ -177,6 +177,7 @@
+--- godot-4.6-stable.orig/SConstruct	2026-01-25 18:11:41.000000000 +0530
++++ godot-4.6-stable/SConstruct	2026-02-01 15:59:40.076130875 +0530
+@@ -177,6 +177,7 @@ opts.Add(
  )
  opts.Add(BoolVariable("debug_symbols", "Build with debugging symbols", False))
  opts.Add(BoolVariable("separate_debug_symbols", "Extract debugging symbols to a separate file", False))
@@ -8,7 +8,7 @@
  opts.Add(BoolVariable("debug_paths_relative", "Make file paths in debug symbols relative (if supported)", False))
  opts.Add(
      EnumVariable(
-@@ -769,15 +770,16 @@
+@@ -769,15 +770,16 @@ elif env.msvc:
  
  # Set x86 CPU instruction sets to use by the compiler's autovectorization.
  if env["arch"] == "x86_64":
@@ -33,4 +33,4 @@
 +            env.Append(CCFLAGS=["-msse4.2", "-mpopcnt"])
  elif env["arch"] == "x86_32":
      # Be more conservative with instruction sets on 32-bit x86 to improve compatibility.
-     # SSE and SSE2 are present on all CPUs that support 64-bit, even if running a 32-bit OS.
+     # SSE and SSE2 are present on all CPUs that support 6
