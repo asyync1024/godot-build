@@ -26,6 +26,8 @@ b2sums=('a3f40dc0ad08733fa0e5eb1044e0c8075df6147592493593e70d4742f36a9f2e22a70f6
 prepare() {
   cd $pkgname-$pkgver-stable
 
+  patch -Np1 -i "../enable-sse42-toggle.patch" # Apply SSE4.2 toggle patch.
+
   # Patch for miniupnpc
   sed -i 's/addr, 16/addr, 16, nullptr, 0/g' modules/upnp/upnp.cpp
 
@@ -34,8 +36,6 @@ prepare() {
   # MIME info fix, ref FS#77810
   sed -i 's,xmlns="https://specifications.freedesktop.org/shared-mime-info-spec",xmlns="http://www.freedesktop.org/standards/shared-mime-info",g' \
     org.godotengine.Godot.xml
-
-  patch -Np1 -i "../enable-sse42-toggle.patch"
 }
 
 case $CARCH in
