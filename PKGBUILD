@@ -18,8 +18,10 @@ depends=(brotli ca-certificates embree freetype2 graphite libglvnd libspeechd li
   libwebp libwslay libxcursor libxi libxinerama libxrandr miniupnpc openxr pcre2)
 optdepends=('pipewire-alsa: for audio support'
   'pulse-native-provider: for audio support')
-source=("$pkgname-$pkgver.tar.xz::https://github.com/godotengine/godot/releases/download/$pkgver-stable/$pkgname-$pkgver-stable.tar.xz")
-b2sums=('a3f40dc0ad08733fa0e5eb1044e0c8075df6147592493593e70d4742f36a9f2e22a70f655cbb083509ce45b7767008d8786f1f3d01c5ff5d35761b390134e8fd')
+source=("$pkgname-$pkgver.tar.xz::https://github.com/godotengine/godot/releases/download/$pkgver-stable/$pkgname-$pkgver-stable.tar.xz"
+        "enable-sse42-toggle.patch)
+b2sums=('a3f40dc0ad08733fa0e5eb1044e0c8075df6147592493593e70d4742f36a9f2e22a70f655cbb083509ce45b7767008d8786f1f3d01c5ff5d35761b390134e8fd'
+        'a648c9ae701cbfa2fd482e597290b84d9622d02af2326c6a55cb8319b58359b2ebf58def0ddb7c3f5ca18dbbc1a552892f9ad381aea7edec6544b99e48c06f81')
 
 prepare() {
   cd $pkgname-$pkgver-stable
@@ -32,6 +34,8 @@ prepare() {
   # MIME info fix, ref FS#77810
   sed -i 's,xmlns="https://specifications.freedesktop.org/shared-mime-info-spec",xmlns="http://www.freedesktop.org/standards/shared-mime-info",g' \
     org.godotengine.Godot.xml
+
+  patch -Np1 -i "$srcdir/enable-sse42-toggle.patch"
 }
 
 case $CARCH in
