@@ -21,7 +21,7 @@ optdepends=('pipewire-alsa: for audio support'
 source=("$pkgname-$pkgver.tar.xz::https://github.com/godotengine/godot/releases/download/$pkgver-stable/$pkgname-$pkgver-stable.tar.xz"
         "enable-sse42-toggle.patch")
 b2sums=('a3f40dc0ad08733fa0e5eb1044e0c8075df6147592493593e70d4742f36a9f2e22a70f655cbb083509ce45b7767008d8786f1f3d01c5ff5d35761b390134e8fd'
-        '871c6aa6b943ae3f6a0169c37ccb6ec25d7d0f0010d1599c9ee06137d76af3cbc542d3dfa0d7891b28532ce5eef4c9b3f5713a133e93163fe2a1e522c709762b')
+        'f0d925523cf0ae2298aa0ad3196064a5ca9f3d2fb66712dec22e8f1763546cfc7b1a32fe285aad21b91f1f1f83b7ee0a561592d59f10ff0374b4ae5d0fd393a4')
 
 prepare() {
   cd $pkgname-$pkgver-stable
