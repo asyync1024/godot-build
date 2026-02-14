@@ -44,6 +44,7 @@ jobs:
             lib32-pulseaudio \
             lib32-glib2 \
             pulse-native-provider \
+            libsquish \
             graphite \
             openxr \
             miniupnpc \
@@ -71,11 +72,11 @@ jobs:
         run: |
           cd "$GITHUB_WORKSPACE"
           AUR_DEPS=(
+          lib32-libsquish
           lib32-graphite
           lib32-jsoncpp
           lib32-openxr
           lib32-miniupnpc
-          lib32-libsquish
           )
           for pkg in ${AUR_DEPS[@]}; do
             su - builder -c "cd $GITHUB_WORKSPACE &&
