@@ -1,5 +1,7 @@
-The following lib32 versions are not available.
-The ! indicates that it's been removed from the PKGBUILD, note that I was not able to find libspeechd usage in the PKGBUILD, so I didn't put a ! before it.
+The following lib32 packcages are not available.
+The ! indicates that godot32 builds are using builtin libraries provided by upstream.
+Note that I was not able to find libspeechd usage in the PKGBUILD, so I didn't put a ! before it.
+
 !embree
-libspeechd
+?libspeechd
 !libwslay
